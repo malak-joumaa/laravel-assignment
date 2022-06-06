@@ -6,16 +6,8 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    public function sayHi(){
-        $message = "From DB";
-
-        return response()->json([
-            "status" => "Success",
-            "message" => $message
-        ], 200);
-    }
-
-    public function Palindrome(){ 
+    //Palindrome
+    public function palindrome(){ 
         $palindrome_count=0;
         $array = ["madam","hello","malak","balab","malam"];
         for($i=0; $i<count($array); $i++)
@@ -28,6 +20,7 @@ class TestController extends Controller
         ], 200);
     }
 
+    //Difference in seconds
     public function seconds(){ 
         $diff = microtime(true)- mktime(0,0,0,4,14,1732);
         return response()->json([
@@ -47,7 +40,14 @@ class TestController extends Controller
             echo curl_error($curl);
         }
         curl_close($curl);
-        $result = json_decode($json);
+        $jsonArray = json_decode($json,true);
+        $key = "attachments";
+        $inner_arr = $jsonArray[$key];
+        $first_element=reset($inner_arr);
+        $string=json_encode($first_element,true);
+        $array=json_decode($string,true);
+         $key2 = "text";
+        $result = $array[$key2];
         return response()->json([
             "status" => "Success",
             "callAPI" => $result
@@ -70,6 +70,34 @@ class TestController extends Controller
         return response()->json([
             "status" => "Success",
             "beerApi" => $result
+        ], 200);
+    }
+
+    //Groups of students
+    public function students(){ 
+        $groups = array();
+        $students = array("malak","huda","hassan","ali","tarek");
+        for($i=0; $i<count($students)-1; $i++){
+            array_push($groups,array($students[$i],$students[$i+1]));
+            if(count($students)%2!=0 && $i==count($students)-3){
+                array_push($groups,array($students[$i+2]));
+            }
+            $i++;
+        }
+            
+        return response()->json([
+            "status" => "Success",
+            "students" => $groups
+        ], 200);
+    }
+
+    //Random nominee
+    public function nominee(){ 
+        $students = array("malak","huda","pablo","pablo","tarek","pablo");
+        $nominee = $students[rand(0,count($students)-1)];
+        return response()->json([
+            "status" => "Success",
+            "student" =>$nominee
         ], 200);
     }
 }
