@@ -36,25 +36,7 @@ class TestController extends Controller
         ], 200);
     }
 
-    // public function callAPI(){ 
-    //     $curl = curl_init();
-    //     $url="https://icanhazdadjoke.com/slack";
-    //     curl_setopt($curl, CURLOPT_URL, $url);
-    //     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    //     curl_setopt($curl,CURLOPT_CONNECTTIMEOUT, 4);
-    //     $json = curl_exec($curl);
-    //     if(!$json) {
-    //         echo curl_error($curl);
-    //     }
-    //     curl_close($curl);
-    //     $result = json_decode($json);
-    //     $text = "text";
-    //     return response()->json([
-    //         "status" => "Success",
-    //         "callAPI" => $result
-    //     ], 200);
-    // }
-    public function callAPI(){ 
+    public function callApi(){ 
         $curl = curl_init();
         $url="https://icanhazdadjoke.com/slack";
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -66,11 +48,28 @@ class TestController extends Controller
         }
         curl_close($curl);
         $result = json_decode($json);
-        $text = "text";
-        $c="attachments";
         return response()->json([
             "status" => "Success",
             "callAPI" => $result
+        ], 200);
+    }
+
+    //beer API
+    public function beerApi(){ 
+        $curl = curl_init();
+        $url="https://api.punkapi.com/v2/beers";
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl,CURLOPT_CONNECTTIMEOUT, 4);
+        $json = curl_exec($curl);
+        if(!$json) {
+            echo curl_error($curl);
+        }
+        curl_close($curl);
+        $result = json_decode($json);
+        return response()->json([
+            "status" => "Success",
+            "beerApi" => $result
         ], 200);
     }
 }
