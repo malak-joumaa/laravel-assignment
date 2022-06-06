@@ -41,13 +41,11 @@ class TestController extends Controller
         }
         curl_close($curl);
         $jsonArray = json_decode($json,true);
-        $key = "attachments";
-        $inner_arr = $jsonArray[$key];
-        $first_element=reset($inner_arr);
+        $second_arr = $jsonArray["attachments"];
+        $first_element=reset($second_arr);
         $string=json_encode($first_element,true);
         $array=json_decode($string,true);
-         $key2 = "text";
-        $result = $array[$key2];
+        $result = $array["text"];
         return response()->json([
             "status" => "Success",
             "callAPI" => $result
@@ -66,11 +64,9 @@ class TestController extends Controller
             echo curl_error($curl);
         }
         curl_close($curl);
-        $result = json_decode($json);
-        return response()->json([
-            "status" => "Success",
-            "beerApi" => $result
-        ], 200);
+        $jsonArray = json_decode($json,true);
+        $result = $jsonArray[rand(0,count($jsonArray)-1)]["ingredients"];
+        return $result;
     }
 
     //Groups of students
@@ -84,20 +80,13 @@ class TestController extends Controller
             }
             $i++;
         }
-            
-        return response()->json([
-            "status" => "Success",
-            "students" => $groups
-        ], 200);
+        return $groups;
     }
 
     //Random nominee
     public function nominee(){ 
         $students = array("malak","huda","pablo","pablo","tarek","pablo");
         $nominee = $students[rand(0,count($students)-1)];
-        return response()->json([
-            "status" => "Success",
-            "student" =>$nominee
-        ], 200);
+        return $nominee;
     }
 }
